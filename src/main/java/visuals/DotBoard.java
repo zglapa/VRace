@@ -14,15 +14,15 @@ public class DotBoard {
     public ArrayList<ArrayList<Dot>> dots = new ArrayList<>();
     public Queue<Dot> clickedDots = new LinkedList<>();
     public Dot hoveredDot;
-    public DotBoard(int rows, int columns){
-        dotboard.setPrefWidth(50 * columns);
-        dotboard.setPrefHeight(50 * rows);
-        for(int i = 0; i < rows; ++i){
+    public DotBoard(int rows, int columns, int size){
+        dotboard.setPrefWidth(size * columns);
+        dotboard.setPrefHeight(size * rows);
+        for(int i = 0; i <= rows; ++i){
             dots.add(new ArrayList<Dot>());
-            for(int j = 0; j < columns; ++j){
-                Dot dot = new Dot(5f);
-                dot.dot.setCenterY(50 * i);
-                dot.dot.setCenterX(50 * j);
+            for(int j = 0; j <= columns; ++j){
+                Dot dot = new Dot(3f, i ,j);
+                dot.dot.setCenterY(size * i);
+                dot.dot.setCenterX(size * j);
                 dots.get(i).add(dot);
                 dotboard.getChildren().add(dot.dot);
             }

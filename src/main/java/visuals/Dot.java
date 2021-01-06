@@ -10,12 +10,16 @@ import javafx.scene.shape.Circle;
 
 public class Dot {
     public Circle dot;
+    public int x;
+    public int y;
     private Boolean clicked;
     private MouseEvent onEnter;
-    public Dot(double size){
+    public Dot(double size, int x, int y){
+        this.x = x;
+        this.y = y;
         dot = new Circle(size, Color.BLUE);
         dot.setStroke(Color.BLACK);
-        dot.setStrokeWidth(1f);
+        dot.setStrokeWidth(0.125 * size);
         this.clicked = false;
         setAction();
     }

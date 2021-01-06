@@ -16,7 +16,7 @@ public class Controller implements Initializable {
     GridPane backgroundPane;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Board board = new Board(10,10, 900*700);
+        Board board = new Board(50,50, 1920*1080);
         backgroundPane.add(board.backboard,0,0);
     }
 

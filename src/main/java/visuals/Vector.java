@@ -1,5 +1,6 @@
 package visuals;
 
+import handlers.BoundHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -24,12 +25,15 @@ public class Vector {
         line.setStartY(this.beg.dot.getCenterY());
         line.setEndX(this.end.dot.getCenterX());
         line.setEndY(this.end.dot.getCenterY());
-        line.setStrokeWidth(5);
+        line.setStrokeWidth(3f);
         if(dashed){
             line.setStrokeLineCap(StrokeLineCap.ROUND);
             line.getStrokeDashArray().addAll(10d, 10d);
         }
         line.setStroke(this.paint);
+        if(BoundHandler.intersects(this)){
+            line.setStroke(Color.RED);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package handlers;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import sample.Game;
 import visuals.Board;
 import visuals.Dot;
 import visuals.Vector;
@@ -14,8 +15,13 @@ public class DotHandler {
             dot.click();
             dot.changeColor(Color.LIGHTGREEN);
             backboard.dotBoard.clickedDots.add(dot);
+            if(backboard.dotBoard.clickedDots.size() == 1){
+                Game.nextMove(dot);
+            }
             if(backboard.dotBoard.clickedDots.size() == 2){
-                drawLine(Color.BLACK);
+                Vector v = drawLine(Color.BLACK);
+                Game.makeMove(dot);
+                clickDot(v.end);
             }
         }
         else{
