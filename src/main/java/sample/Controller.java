@@ -3,6 +3,7 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import visuals.Board;
 import visuals.Dot;
 import visuals.Vector;

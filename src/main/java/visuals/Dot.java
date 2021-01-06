@@ -1,6 +1,6 @@
 package visuals;
 
-import javafx.event.ActionEvent;
+import handlers.DotHandler;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -10,45 +10,34 @@ import javafx.scene.shape.Circle;
 
 public class Dot {
     public Circle dot;
+    private Boolean clicked;
+    private MouseEvent onEnter;
     public Dot(double size){
         dot = new Circle(size, Color.BLUE);
         dot.setStroke(Color.BLACK);
         dot.setStrokeWidth(1f);
+        this.clicked = false;
         setAction();
     }
     private void setAction(){
-        dot.setOnMouseEntered(new EventHandler< MouseEvent >(){
-
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                dot.setStroke(Color.RED);
-                dot.setStrokeWidth(2f);
-            }
-        });
-        dot.setOnMouseExited(new EventHandler< MouseEvent >(){
-
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                dot.setStroke(Color.BLACK);
-                dot.setStrokeWidth(1f);
-            }
-        });
-        dot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(dot.getFill().equals(Color.BLUE)){
-                    changeColor(Color.LIGHTGREEN);
-                }
-                else{
-                    changeColor(Color.BLUE);
-                }
-            }
+        dot.setOnMouseEntered(mouseEvent -> DotHandler.enterDot(this));
+        dot.setOnMouseExited(mouseEvent -> DotHandler.exitDot(this));
+        dot.setOnMouseClicked(mouseEvent -> {
+            DotHandler.clickDot(this);
         });
     }
+    public boolean ifClicked() {
+        return this.clicked;
+    }
+    public void click(){
+        this.clicked = !this.clicked;
+    }
+
     public void changeColor(Paint paint) {
         dot.setFill(paint);
     }
     public void changeBorder(Paint paint) {
         dot.setStroke(paint);
     }
+
 }
