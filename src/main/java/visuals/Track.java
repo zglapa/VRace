@@ -43,7 +43,6 @@ public class Track {
                 new LineTo(startXOuter, startYOuter + outerHeight),
                 new LineTo(startXOuter, startYOuter));
         this.outer.setStrokeWidth(2f);
-
     }
     private void drawFinishLine(Dot finishDot){
         this.finish = new Line();
