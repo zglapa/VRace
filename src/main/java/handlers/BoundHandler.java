@@ -7,81 +7,44 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Pair;
 import visuals.Board;
+import visuals.TrackElement;
 import visuals.Vector;
-
+import java.awt.geom.*;
 
 public class BoundHandler {
     public static Board board;
     public static boolean intersects(Vector vector){
-        Bounds bInner = board.track.inner.getLayoutBounds();
-        Bounds bOuter = board.track.outer.getLayoutBounds();
-        Bounds vectorBounds = vector.line.getLayoutBounds();
-//        System.out.println(bInner);
-//        System.out.println(vectorBounds);
-        if(bOuter.contains(vectorBounds) && !bInner.intersects(vectorBounds)){
-            return false;
-        }
-        return preciseIntersects(vector);
+        return lineIntersection(vector);
     }
-    private static boolean preciseIntersects(Vector vector){
-        Pair<Double, Double> fun;
-        double lengthX;
-        double lengthY;
-        try{
-            fun = func(vector.line);
-            lengthX = vector.line.getEndX() - vector.line.getStartX();
-            lengthY = vector.line.getEndY() - vector.line.getStartY();
-        }catch (StraightLineException e){
-            lengthY = vector.line.getEndY() - vector.line.getStartY();
-            double chunk = lengthY/1000;
-            for(int i = 0; i < 1000; ++i){
-                double y = i*chunk + vector.line.getStartY();
-                double x = vector.line.getStartX();
-                if(board.track.inner.contains(x,y) || !board.track.outer.contains(x,y)){
-                    System.out.println(x + " " + y);
-                    if((x > board.track.startXInner && x < board.track.startXInner + board.track.innerLength) && (y > board.track.startYInner && y < board.track.startYInner+board.track.innerHeight)){
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+    public static boolean lineIntersection(Vector vector){
+        Line2D.Double vecGeom = new Line2D.Double(vector.line.getStartX(), vector.line.getStartY(), vector.line.getEndX(), vector.line.getEndY());
+        for(Pair<Shape, TrackElement> p : board.track.innerElements){
+            if (checkIntersection(vecGeom, p)) return true;
 
-        if(Math.abs(lengthX) > Math.abs(lengthY)){
-            double chunk = lengthX/1000;
-            for(int i = 0; i < 1000; ++i){
-                double x = i*chunk + vector.line.getStartX();
-                double y = fun.getKey()*x + fun.getValue();
-                if(board.track.inner.contains(x,y) || !board.track.outer.contains(x,y)){
-                    System.out.println(x + " " + y);
-                    if((x > board.track.startXInner && x < board.track.startXInner + board.track.innerLength) && (y > board.track.startYInner && y < board.track.startYInner+board.track.innerHeight)){
-                        return true;
-                    }
-                }
-            }
         }
-        else{
-            double chunk = lengthY/1000;
-            for(int i = 0; i < 1000; ++i){
-                double y = i*chunk + vector.line.getStartY();
-                double x = (y-fun.getValue())/fun.getKey();
-                if(board.track.inner.contains(x,y) || !board.track.outer.contains(x,y)){
-                    System.out.println(x + " " + y);
-                    if((x > board.track.startXInner && x < board.track.startXInner + board.track.innerLength) && (y > board.track.startYInner && y < board.track.startYInner+board.track.innerHeight)){
-                        return true;
-                    }
-                }
-            }
+        for(Pair<Shape, TrackElement> p : board.track.outerElements){
+            if (checkIntersection(vecGeom, p)) return true;
+
         }
         return false;
     }
-    private static Pair<Double, Double> func(Line line) throws StraightLineException {
-        if(line.getStartX() == line.getEndX()){
-            throw new StraightLineException();
+
+    private static boolean checkIntersection(Line2D.Double vecGeom, Pair<Shape, TrackElement> p) {
+        if(p.getValue() == TrackElement.LINE){
+            Line l = (Line)(p.getKey());
+            Line2D.Double trackLine = new Line2D.Double(l.getStartX(), l.getStartY(), l.getEndX(), l.getEndY());
+            return trackLine.intersectsLine(vecGeom);
         }
-        double a = (line.getEndY()-line.getStartY())/(line.getEndX()-line.getStartX());
-        double b = line.getEndY() - a * line.getEndX();
-        return new Pair<>(a, b);
+        return false;
     }
-    private static class StraightLineException extends Exception{}
+
+//    private static Pair<Double, Double> func(Line line) throws StraightLineException {
+//        if(line.getStartX() == line.getEndX()){
+//            throw new StraightLineException();
+//        }
+//        double a = (line.getEndY()-line.getStartY())/(line.getEndX()-line.getStartX());
+//        double b = line.getEndY() - a * line.getEndX();
+//        return new Pair<>(a, b);
+//    }
+//    private static class StraightLineException extends Exception{}
 }

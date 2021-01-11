@@ -19,7 +19,7 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         Board board = new Board(50,50, this.HEIGHT*this.WIDTH);
         Game.board = board;
-        Game.start();
+        Game.start(4);
         FlowPane backgroundPane = new FlowPane();
         backgroundPane.setMinHeight(this.HEIGHT);
         backgroundPane.setMinWidth(this.WIDTH);

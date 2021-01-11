@@ -13,10 +13,12 @@ public class Vector {
     public Line line;
     public Dot beg, end;
     public Paint paint;
+    public boolean outOfBounds;
     public Vector(Dot beg, Dot end, Paint paint,Boolean dashed){
         this.beg = beg;
         this.end = end;
         this.paint = paint;
+        outOfBounds = false;
         drawLine(dashed);
     }
     private void drawLine(Boolean dashed){
@@ -28,10 +30,11 @@ public class Vector {
         line.setStrokeWidth(3f);
         if(dashed){
             line.setStrokeLineCap(StrokeLineCap.ROUND);
-            line.getStrokeDashArray().addAll(10d, 10d);
+            line.getStrokeDashArray().addAll(2d, 5d);
         }
         line.setStroke(this.paint);
         if(BoundHandler.intersects(this)){
+            outOfBounds = true;
             line.setStroke(Color.RED);
         }
     }

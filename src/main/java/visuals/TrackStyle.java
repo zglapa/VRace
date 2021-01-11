@@ -1,5 +1,5 @@
 package visuals;
 
 public enum TrackStyle {
-    OVAL,LINE
+    SQUARE,OVAL,LINE
 }

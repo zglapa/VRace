@@ -22,7 +22,7 @@ public class Move {
         this.endDot = dot;
         this.x = endDot.x - begDot.x;
         this.y = endDot.y - begDot.y;
-        System.out.println("move " + this.x + this.y);
+        System.out.println("move " + this.x + " " + this.y);
 
     }
 }
