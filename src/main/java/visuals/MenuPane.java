@@ -34,7 +34,7 @@ public class MenuPane extends BorderPane {
         this.HEIGHT = HEIGHT;
         this.WIDTH = WIDTH;
         this.stage = stage;
-        this.setBackground(new Background(new BackgroundImage(new Image("vrace_bckg.jpeg"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
+        this.setBackground(new Background(new BackgroundImage(new Image("main_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
         i = 0;
         setFlowPane();
         addButtons();
@@ -51,7 +51,7 @@ public class MenuPane extends BorderPane {
     }
     private void addButtons(){
         Button playButton = new Button("PLAY");
-        Button optionButton = new Button("OPTIONS");
+        Button optionButton = new Button("HIGHSCORE");
         Button exitButton = new Button("EXIT");
         this.buttons = new ArrayList<>(Arrays.asList(playButton, optionButton, exitButton));
         for(Button button : buttons){
@@ -59,7 +59,7 @@ public class MenuPane extends BorderPane {
             button.setPrefHeight(this.HEIGHT/9f);
             button.setFont(Font.font("msbm10", 40));
             button.setShape(buttonShape());
-            button.setOpacity(0.4);
+            button.setOpacity(0.8);
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {

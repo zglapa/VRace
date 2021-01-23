@@ -27,7 +27,7 @@ public class Sizes {
         STROKEWIDTH = (2f)*RATIO;
         VECTORWIDTH = (3f)*RATIO;
         TRACKWIDTH = 2f/3*VECTORWIDTH;
-        BOARDINDENT = 17f*RATIO;
+        BOARDINDENT = 15f*RATIO;
         NOTICEFONT = 20f*RATIO;
     }
     public static double getSMALLDOTSIZE(){

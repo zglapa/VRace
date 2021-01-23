@@ -1,8 +1,10 @@
 package sample;
 
 import handlers.DotHandler;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.util.Pair;
 import logic.Move;
 import logic.Paints;
 import logic.Player;
@@ -11,6 +13,7 @@ import visuals.Dot;
 import visuals.PlayerColor;
 import visuals.Vector;
 
+import java.io.*;
 import java.util.*;
 
 public class Game {
@@ -40,30 +43,26 @@ public class Game {
         }
         if(v.outOfBounds){
             currentPlayer.setFinished();
-//            board.notificationBoard.addNotification("Out of bounds!");
         }
         if(v.ifFinished() && currentPlayer.ifCheckpoint()){
             System.out.println(currentPlayerIndex + " finished");
             currentPlayer.setFinished();
-//            board.notificationBoard.addNotification("Player " + currentPlayer.getIndex() + " finished the game!");
         }
         changePlayer();
     }
     private static void changePlayer(){
-        if(finishedPlayers.size() == numberOfPlayers){
-            board.notificationBoard.addNotification("All finished!");
-            return;
-        }
         currentPlayerIndex = (currentPlayerIndex+1)%players.size();
         currentPlayer = players.get(currentPlayerIndex);
-        while(currentPlayer.isFinished()){
-            players.remove(currentPlayerIndex);
-            finishedPlayers.add(currentPlayer);
-            if(finishedPlayers.size() == numberOfPlayers){
-                board.notificationBoard.addNotification("All finished!");
-                return;
-            }
-            currentPlayer = players.get(currentPlayerIndex % players.size());
+        int i = 0;
+        while(currentPlayer.isFinished() && i < numberOfPlayers + 1){
+            currentPlayerIndex = (currentPlayerIndex+1)%players.size();
+            currentPlayer = players.get(currentPlayerIndex);
+            i++;
+        }
+        if(i>=numberOfPlayers) {
+            System.out.println("Disabling all");
+            board.dotBoard.setDisable(true);
+            finishTheGame();
         }
         if(playersDots.containsKey(currentPlayer)) {
             DotHandler.clickDot(playersDots.get(currentPlayer));
@@ -122,10 +121,10 @@ public class Game {
             changeDots(gameHistory.get(currentPlayer).get(gameHistory.get(currentPlayer).size()-1), dot);
         }
     }
-    public static void start(int players){
+    public static void start(int players, ArrayList<String> playerNames){
         numberOfPlayers = players;
         numberOfFinishedPlayers = 0;
-        currentPlayer = setPlayers(numberOfPlayers);
+        currentPlayer = setPlayers(numberOfPlayers, playerNames);
         setDots();
     }
     public static void disableDots(){
@@ -168,10 +167,10 @@ public class Game {
             }
         }
     }
-    public static Player setPlayers(int numberOfPlayers) {
+    public static Player setPlayers(int numberOfPlayers, ArrayList<String> playerNames) {
         Player firstPlayer = null;
         for (int i = 0; i < numberOfPlayers; ++i) {
-            Player player = new Player(i, Paints.get(i));
+            Player player = new Player(i, Paints.get(i), playerNames.get(i));
             if (firstPlayer == null) {
                 firstPlayer = player;
             }
@@ -180,5 +179,36 @@ public class Game {
         }
         return firstPlayer;
     }
+    private static void finishTheGame(){
+        ArrayList<Pair<String, Integer>> score;
+        try(
+                FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
+                ObjectInputStream in = new ObjectInputStream(file);
+        ){
+            score = (ArrayList<Pair<String, Integer>>) in.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            score = new ArrayList<>();
+        }
+        for(Player player : players){
+            for(int i = 0; i < score.size();++i){
+                if(score.get(i).getValue() == null || player.getNumberOfMoves() < score.get(i).getValue()){
+                    score.add(i, new Pair<>(player.getName(), player.getNumberOfMoves()));
+                    break;
+                }
+            }
+        }
+        while(score.size() > 10){
+            score.remove(score.size()-1);
+        }
+        try(
+                FileOutputStream file = new FileOutputStream("src/main/resources/highscore.out");
+                ObjectOutputStream out = new ObjectOutputStream(file);
+        ){
+            out.writeObject(score);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
 
+    }
 }

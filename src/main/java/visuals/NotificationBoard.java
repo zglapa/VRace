@@ -1,37 +1,74 @@
 package visuals;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.util.Pair;
 import logic.Sizes;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class NotificationBoard {
-    public StackPane pane = new StackPane();
-    private final int rows, columns, size;
-    public NotificationBoard(int rows, int columns, int size){
-        pane.setVisible(false);
-        pane.setPrefHeight(size*rows);
-        pane.setPrefWidth(size*columns);
-        this.rows = rows;
-        this.columns = columns;
-        this.size = size;
+
+public class NotificationBoard extends StackPane{
+
+    private final double HEIGHT, WIDTH;
+    private final Rectangle backgroundRectangle;
+    private final Label highScore;
+    public NotificationBoard(double HEIGHT, double WIDTH){
+        super();
+        this.HEIGHT = HEIGHT;
+        this.WIDTH = WIDTH;
+        this.setPrefHeight(HEIGHT);
+        this.setPrefWidth(WIDTH);
+        this.backgroundRectangle = setBackground();
+        this.highScore = setHighScore();
+        this.getChildren().addAll(backgroundRectangle, highScore);
+        this.setAlignment(Pos.CENTER);
     }
-    public void addNotification(String text){
+
+    private Rectangle setBackground(){
         Rectangle rectangle = new Rectangle();
-        rectangle.setX(3*(double)columns/8 * size);
-        rectangle.setY(3*(double)rows/8 * size);
-        rectangle.setHeight(5*size*(double)rows/8);
-        rectangle.setWidth(5*size*(double)columns/8);
-        rectangle.setFill(Color.GRAY);
-        rectangle.setOpacity(0.7);
-        Label label = new Label(text);
-        label.setFont(Font.font("Purisa", FontWeight.BOLD, Sizes.getNOTICEFONT()));
-        pane.getChildren().addAll(rectangle, label);
-        pane.setVisible(true);
+        rectangle.setHeight(HEIGHT);
+        rectangle.setWidth(WIDTH);
+        rectangle.setArcHeight(WIDTH/3);
+        rectangle.setArcWidth(WIDTH/3);
+        rectangle.setOpacity(0.2);
+        rectangle.setFill(Color.WHITE);
+        rectangle.setStroke(Color.WHITE);
+        rectangle.setStrokeWidth(3f);
+        return rectangle;
+    }
+
+    private Label setHighScore(){
+        ArrayList<Pair<String, Integer>> score;
+
+        try(
+                FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
+                ObjectInputStream in = new ObjectInputStream(file);
+                ){
+            score = (ArrayList<Pair<String, Integer>>) in.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return  new Label("");
+        }
+
+        Label highscore = new Label();
+        highscore.setPrefWidth(7f/8* WIDTH);
+        highscore.setMaxWidth(7f/8 * WIDTH);
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < score.size(); ++i){
+            if(score.get(i).getValue() == null){
+                stringBuilder.append(i+1).append(". ").append(score.get(i).getKey()).append("\n");
+            }
+            else stringBuilder.append(i+1).append(". ").append(score.get(i).getKey()).append(" -> ").append(score.get(i).getValue()).append("\n");
+        }
+        highscore.setText(stringBuilder.toString());
+        highscore.setTextFill(Color.BLACK);
+        return highscore;
     }
 }

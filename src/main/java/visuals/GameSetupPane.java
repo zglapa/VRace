@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -32,6 +34,8 @@ public class GameSetupPane extends BorderPane {
     private Slider trackSizeSlider;
     private Slider numberOfPlayersSilder;
     private ArrayList<Button> buttons;
+    private ArrayList<String> names;
+    private ArrayList<PlayerNameField> playerNameFields;
     public GameSetupPane(int WIDTH, int HEIGHT, Stage stage){
         super();
         this.setPrefWidth(WIDTH);
@@ -40,7 +44,8 @@ public class GameSetupPane extends BorderPane {
         this.HEIGHT = HEIGHT;
         this.stage = stage;
         this.setPadding(new Insets(150,30,50,30));
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        this.setBackground(new Background(new BackgroundImage(new Image("setup_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
+        this.playerNameFields = new ArrayList<>();
         setGridPane();
         addNodes();
     }
@@ -98,14 +103,18 @@ public class GameSetupPane extends BorderPane {
             button.setPrefHeight(Sizes.getHEIGHT()/20);
             button.setFont(Font.font("msbm10", 40));
             button.setShape(buttonShape());
-            button.setOpacity(0.4);
+            button.setOpacity(0.8);
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     if(button.getText().equalsIgnoreCase("PLAY")){
                         Sizes.setROWSCOLUMNS((int)trackSizeSlider.getValue(), (int)trackSizeSlider.getValue());
                         Sizes.setPLAYERNUMBER((int)numberOfPlayersSilder.getValue());
-                        Main.game(stage);
+                        names = new ArrayList<>();
+                        for(PlayerNameField f : playerNameFields){
+                            names.add(f.getName());
+                        }
+                        Main.game(stage, names);
                     }
                     else if(button.getText().equalsIgnoreCase("RETURN")){
                         Main.goToMainMenu(stage);
@@ -119,8 +128,10 @@ public class GameSetupPane extends BorderPane {
     private void manipulateSlider(Slider slider, Number oldVal, Number newVal){
         if(oldVal.equals(newVal)) return;
         flowPane.getChildren().clear();
+        playerNameFields.clear();
         for(int i = 0; i < newVal.intValue(); ++i){
             PlayerNameField pnf = new PlayerNameField(Paints.get(i), i, Sizes.getWIDTH()/3, Sizes.getHEIGHT()/20);
+            playerNameFields.add(pnf);
             flowPane.getChildren().add(pnf);
         }
         switch (newVal.intValue()){

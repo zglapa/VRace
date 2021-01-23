@@ -23,7 +23,7 @@ public class PlayerNameField extends StackPane {
         hBox.setAlignment(Pos.CENTER);
         Rectangle background = new Rectangle(WIDTH, HEIGHT);
         background.setFill(Color.WHITE);
-        background.setOpacity(0.4);
+        background.setOpacity(0.8);
         background.setArcWidth(HEIGHT/3);
         background.setArcHeight(HEIGHT/3);
         nameField = new TextField("Player " + index);

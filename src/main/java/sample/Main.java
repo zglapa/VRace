@@ -2,24 +2,26 @@ package sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logic.Sizes;
 import visuals.Board;
 import visuals.GameSetupPane;
 import visuals.MenuPane;
+import visuals.NotificationBoard;
+
+import java.util.ArrayList;
 
 public class Main extends Application {
     public final int HEIGHT = 900;
-    public final int WIDTH = 900;
+    public final int WIDTH = 1200;
     public final int COLUMNS = 30;
     public final int ROWS = 30;
     @Override
@@ -45,22 +47,25 @@ public class Main extends Application {
     }
     public static void goToSetup(Stage primaryStage){
         GameSetupPane gameSetupPane = new GameSetupPane(Sizes.getWIDTH(), Sizes.getHEIGHT(),primaryStage);
-        gameSetupPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
         Group root = new Group(gameSetupPane);
         primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));
         primaryStage.getScene().getStylesheets().add("style.css");
         primaryStage.show();
     }
-    public static void game(Stage primaryStage){
+    public static void game(Stage primaryStage, ArrayList<String> playerNames){
         Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH());
         Game.board = board;
-        Game.start(Sizes.getPLAYERNUMBER());
+        Game.start(Sizes.getPLAYERNUMBER(), playerNames);
         FlowPane backgroundPane = new FlowPane();
         backgroundPane.setMinHeight(Sizes.getHEIGHT());
         backgroundPane.setMinWidth(Sizes.getWIDTH());
         backgroundPane.getChildren().add(board.backboard);
-        backgroundPane.setAlignment(Pos.CENTER);
-        backgroundPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        backgroundPane.setAlignment(Pos.CENTER_LEFT);
+        backgroundPane.setHgap(Sizes.getWIDTH()/40f);
+        backgroundPane.setPadding(new Insets(10,10,10,10));
+        backgroundPane.setBackground(new Background(new BackgroundImage(new Image("game_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(Sizes.getWIDTH(), Sizes.getHEIGHT(), false, false, true, true))));
+        NotificationBoard notificationBoard = new NotificationBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()));
+        backgroundPane.getChildren().add(notificationBoard);
         Group root = new Group(backgroundPane);
         primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));
         primaryStage.getScene().getStylesheets().add("style.css");

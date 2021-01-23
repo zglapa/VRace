@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Board {
     public StackPane backboard= new StackPane();
-    public NotificationBoard notificationBoard;
     public DotBoard dotBoard;
     public Pane vectorboard = new Pane();
     public Vector hoverLine;
@@ -26,13 +25,11 @@ public class Board {
         this.columns = columns;
         setdotboard(rows, columns);
         setvectorboard(rows, columns);
-        setNotificationBoard();
         backboard.setPrefHeight(Sizes.getBOARDINDENT() * rows);
         backboard.setPrefWidth(Sizes.getBOARDINDENT() * columns);
         backboard.getChildren().add(vectorboard);
 //        vectorboard.setVisible(false);
         backboard.getChildren().add(dotBoard);
-        backboard.getChildren().add(notificationBoard.pane);
         DotHandler.backboard = this;
         BoundHandler.board = this;
         LineHandler.board = this;
@@ -62,10 +59,7 @@ public class Board {
         vectorboard.getChildren().add(this.track.finish);
         finishDots.removeIf(dot -> dot.getCenterY() < this.track.finish.getStartY() || dot.getCenterY() > this.track.finish.getEndY());
     }
-    private void setNotificationBoard(){
-        notificationBoard = new NotificationBoard(rows, columns, (int) Sizes.getBOARDINDENT());
 
-    }
 
 
 }
