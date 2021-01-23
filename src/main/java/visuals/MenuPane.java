@@ -64,7 +64,7 @@ public class MenuPane extends BorderPane {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     if(button.getText().equalsIgnoreCase("PLAY")){
-                        Main.game(stage);
+                        Main.goToSetup(stage);
                     }
                     else if(button.getText().equalsIgnoreCase("EXIT")){
                         Main.exit(stage);
@@ -75,7 +75,7 @@ public class MenuPane extends BorderPane {
         this.flowPane.getChildren().addAll(playButton,optionButton, exitButton);
     }
     private Rectangle buttonShape(){
-        Rectangle rectangle = new Rectangle(this.WIDTH/2f, this.HEIGHT/8f);
+        Rectangle rectangle = new Rectangle(this.WIDTH/2f, this.HEIGHT/9f);
         rectangle.setArcHeight(this.HEIGHT/27f);
         rectangle.setArcWidth(this.HEIGHT/27f);
 

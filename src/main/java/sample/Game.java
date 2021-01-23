@@ -4,6 +4,7 @@ import handlers.DotHandler;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import logic.Move;
+import logic.Paints;
 import logic.Player;
 import visuals.Board;
 import visuals.Dot;
@@ -13,7 +14,6 @@ import visuals.Vector;
 import java.util.*;
 
 public class Game {
-    static ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#2098DF"),Color.web("#C720DF"),Color.web("#DF6720"),Color.web("#38DF20")));
     static Board board;
     static Queue<Dot> enabledDots = new LinkedList<>();
     static HashMap<Player, ArrayList<Move>> gameHistory = new HashMap<>();
@@ -171,7 +171,7 @@ public class Game {
     public static Player setPlayers(int numberOfPlayers) {
         Player firstPlayer = null;
         for (int i = 0; i < numberOfPlayers; ++i) {
-            Player player = new Player(i, colors.get(i));
+            Player player = new Player(i, Paints.get(i));
             if (firstPlayer == null) {
                 firstPlayer = player;
             }

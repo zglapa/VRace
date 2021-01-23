@@ -1,0 +1,11 @@
+.root{
+    -fx-font-family: "Ubuntu Thin";
+}
+.label{
+    -fx-font-family:"Ubuntu Thin";
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+}
+.slider .axis{
+    -fx-tick-label-fill: white;
+}
