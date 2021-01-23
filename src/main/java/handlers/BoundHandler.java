@@ -11,12 +11,13 @@ import visuals.TrackElement;
 import visuals.Vector;
 import java.awt.geom.*;
 
+
 public class BoundHandler {
     public static Board board;
     public static boolean intersects(Vector vector){
         return lineIntersection(vector);
     }
-    public static boolean lineIntersection(Vector vector){
+    private static boolean lineIntersection(Vector vector){
         Line2D.Double vecGeom = new Line2D.Double(vector.line.getStartX(), vector.line.getStartY(), vector.line.getEndX(), vector.line.getEndY());
         for(Pair<Shape, TrackElement> p : board.track.innerElements){
             if (checkIntersection(vecGeom, p)) return true;

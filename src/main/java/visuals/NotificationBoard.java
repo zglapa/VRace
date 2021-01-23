@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import logic.Sizes;
 
 
 public class NotificationBoard {
@@ -29,7 +30,7 @@ public class NotificationBoard {
         rectangle.setFill(Color.GRAY);
         rectangle.setOpacity(0.7);
         Label label = new Label(text);
-        label.setFont(Font.font("Purisa", FontWeight.BOLD, 40));
+        label.setFont(Font.font("Purisa", FontWeight.BOLD, Sizes.getNOTICEFONT()));
         pane.getChildren().addAll(rectangle, label);
         pane.setVisible(true);
     }

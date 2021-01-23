@@ -15,19 +15,17 @@ public class DotHandler {
         Player currentPlayer = Game.currentPlayer;
         if(!dot.ifClicked()){
             dot.click();
-            dot.changeColor(Color.LIGHTGREEN);
             backboard.dotBoard.clickedDots.add(dot);
             if(backboard.dotBoard.clickedDots.size() == 1){
                 Game.selectDot(dot);
             }
             if(backboard.dotBoard.clickedDots.size() == 2){
                 Vector v = drawLine(currentPlayer.getColor());
-                Game.makeMove(dot, v.outOfBounds);
+                Game.makeMove(dot, v);
             }
         }
         else{
             dot.click();
-            dot.changeColor(Color.BLUE);
             if(backboard.dotBoard.clickedDots.size() == 1){
                 Dot d = backboard.dotBoard.clickedDots.remove();
                 if(d != dot){
@@ -38,8 +36,7 @@ public class DotHandler {
     }
     public static void enterDot(Dot dot){
         Player currentPlayer = Game.currentPlayer;
-        dot.dot.setStroke(Color.RED);
-        dot.dot.setStrokeWidth(2f);
+        dot.changeBorder(Color.RED);
         backboard.dotBoard.hoveredDot = dot;
         if(backboard.dotBoard.clickedDots.size() == 1){
             Dot d1 = backboard.dotBoard.clickedDots.peek();
@@ -48,8 +45,7 @@ public class DotHandler {
         }
     }
     public static void exitDot(Dot dot){
-        dot.dot.setStroke(Color.BLACK);
-        dot.dot.setStrokeWidth(1f);
+        dot.changeBorder(null);
         backboard.dotBoard.hoveredDot = null;
         if(backboard.hoverLine != null){
             backboard.vectorboard.getChildren().remove(backboard.hoverLine.line);

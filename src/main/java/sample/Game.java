@@ -7,11 +7,13 @@ import logic.Move;
 import logic.Player;
 import visuals.Board;
 import visuals.Dot;
+import visuals.PlayerColor;
+import visuals.Vector;
 
 import java.util.*;
 
 public class Game {
-    static ArrayList<Paint> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE));
+    static ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#2098DF"),Color.web("#C720DF"),Color.web("#DF6720"),Color.web("#38DF20")));
     static Board board;
     static Queue<Dot> enabledDots = new LinkedList<>();
     static HashMap<Player, ArrayList<Move>> gameHistory = new HashMap<>();
@@ -20,21 +22,42 @@ public class Game {
     public static Player currentPlayer;
     static int currentPlayerIndex;
     static int numberOfPlayers;
-    public static void makeMove(Dot dot, boolean outOfBounds) {
+    static int numberOfFinishedPlayers;
+    public static void makeMove(Dot dot, Vector v) {
+        playersDots.get(currentPlayer).setTaken(false,currentPlayer);
         playersDots.replace(currentPlayer, dot);
+        playersDots.get(currentPlayer).setTaken(true,currentPlayer);
         Move lastMove = gameHistory.get(currentPlayer).get(gameHistory.get(currentPlayer).size()-1);
         Move move = new Move(lastMove);
         move.makeMove(dot);
         gameHistory.get(currentPlayer).add(move);
-        dot.dot.setDisable(false);
-        if(outOfBounds){
-            board.notificationBoard.addNotification("Out of bounds!");
+        dot.setDisable(false);
+        currentPlayer.increaseNumberOfMoves();
+        if(v.ifCheckpoint()){
+            currentPlayer.setCheckpoint();
+            System.out.println(currentPlayerIndex + " checkpoint");
+        }
+        if(v.outOfBounds){
+            currentPlayer.setFinished();
+//            board.notificationBoard.addNotification("Out of bounds!");
+        }
+        if(v.ifFinished() && currentPlayer.ifCheckpoint()){
+            System.out.println(currentPlayerIndex + " finished");
+            currentPlayer.setFinished();
+//            board.notificationBoard.addNotification("Player " + currentPlayer.getIndex() + " finished the game!");
         }
         changePlayer();
     }
     private static void changePlayer(){
         currentPlayerIndex = (currentPlayerIndex + 1) % numberOfPlayers;
         currentPlayer = players.get(currentPlayerIndex);
+        if(currentPlayer.isFinished() && numberOfFinishedPlayers < numberOfPlayers){
+            numberOfFinishedPlayers++;
+            changePlayer();
+        }
+        else if(numberOfFinishedPlayers >= numberOfPlayers){
+            board.notificationBoard.addNotification("All finished!");
+        }
         if(playersDots.containsKey(currentPlayer)) {
             DotHandler.clickDot(playersDots.get(currentPlayer));
         }
@@ -72,15 +95,17 @@ public class Game {
                         break;
                 }
                 assert d != null;
-                d.dot.setDisable(false);
+                d.setDisable(false);
                 enabledDots.add(d);
             }
         }
     }
     public static void selectDot(Dot dot){
         disableDots();
+        dot.changeBorder(Color.BLACK);
         // Player's first selected dot
         if(gameHistory.get(currentPlayer).isEmpty()){
+            dot.setTaken(true, currentPlayer);
             Move move = makeZeroMove(currentPlayer, dot);
             setZeroDots(move, dot);
         }
@@ -92,13 +117,14 @@ public class Game {
     }
     public static void start(int players){
         numberOfPlayers = players;
+        numberOfFinishedPlayers = 0;
         currentPlayer = setPlayers(numberOfPlayers);
         setDots();
     }
     public static void disableDots(){
         while(!enabledDots.isEmpty()){
             Dot dot = enabledDots.remove();
-            dot.dot.setDisable(true);
+            dot.setDisable(true);
         }
     }
     public static void setDots(){
@@ -107,12 +133,12 @@ public class Game {
         for(ArrayList<Dot> row : dots){
             for(Dot dot : row){
                 if(!exceptions.isEmpty() && dot == exceptions.peek()){
-                    dot.dot.setDisable(false);
+                    dot.setDisable(false);
                     enabledDots.add(dot);
                     exceptions.remove();
                 }
                 else{
-                    dot.dot.setDisable(true);
+                    dot.setDisable(true);
                 }
             }
         }
@@ -125,18 +151,21 @@ public class Game {
                 for (int j = -1; j <= 1; ++j) {
                     if(centerDotY + j >= 0 && centerDotY + j <= board.columns){
                         Dot d = board.dotBoard.dots.get(centerDotX + i).get(centerDotY + j);
-                        d.dot.setDisable(false);
+                        if(!d.ifTaken()){
+                            d.setDisable(false);
+                        }
+
                         enabledDots.add(d);
                     }
                 }
             }
         }
     }
-    public static Player setPlayers(int numberOfPlayers){
+    public static Player setPlayers(int numberOfPlayers) {
         Player firstPlayer = null;
-        for(int i = 0; i < numberOfPlayers; ++i){
-            Player player = new Player(i, colors.get(i%colors.size()));
-            if(firstPlayer == null){
+        for (int i = 0; i < numberOfPlayers; ++i) {
+            Player player = new Player(i, colors.get(i));
+            if (firstPlayer == null) {
                 firstPlayer = player;
             }
             players.add(player);
@@ -144,4 +173,5 @@ public class Game {
         }
         return firstPlayer;
     }
+
 }

@@ -9,17 +9,21 @@ import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.Sizes;
 import visuals.Board;
 
 public class Main extends Application {
-    public final int HEIGHT = 900 ;
-    public final int WIDTH = 1600;
+    public final int HEIGHT = 900;
+    public final int WIDTH = 900;
+    public final int COLUMNS = 15;
+    public final int ROWS = 15;
     @Override
     public void start(Stage primaryStage){
-        primaryStage.setTitle("Hello World");
-        Board board = new Board(50,50, this.HEIGHT*this.WIDTH);
+        primaryStage.setTitle("VRace");
+        Sizes.set(HEIGHT,WIDTH,ROWS, COLUMNS);
+        Board board = new Board(COLUMNS,ROWS, this.HEIGHT*this.WIDTH);
         Game.board = board;
-        Game.start(4);
+        Game.start(2);
         FlowPane backgroundPane = new FlowPane();
         backgroundPane.setMinHeight(this.HEIGHT);
         backgroundPane.setMinWidth(this.WIDTH);
