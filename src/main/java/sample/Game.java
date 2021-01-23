@@ -18,6 +18,7 @@ public class Game {
     static Queue<Dot> enabledDots = new LinkedList<>();
     static HashMap<Player, ArrayList<Move>> gameHistory = new HashMap<>();
     public static ArrayList<Player> players = new ArrayList<>();
+    public static ArrayList<Player> finishedPlayers = new ArrayList<>();
     public static HashMap<Player, Dot> playersDots = new HashMap<>();
     public static Player currentPlayer;
     static int currentPlayerIndex;
@@ -49,14 +50,20 @@ public class Game {
         changePlayer();
     }
     private static void changePlayer(){
-        currentPlayerIndex = (currentPlayerIndex + 1) % numberOfPlayers;
-        currentPlayer = players.get(currentPlayerIndex);
-        if(currentPlayer.isFinished() && numberOfFinishedPlayers < numberOfPlayers){
-            numberOfFinishedPlayers++;
-            changePlayer();
-        }
-        else if(numberOfFinishedPlayers >= numberOfPlayers){
+        if(finishedPlayers.size() == numberOfPlayers){
             board.notificationBoard.addNotification("All finished!");
+            return;
+        }
+        currentPlayerIndex = (currentPlayerIndex+1)%players.size();
+        currentPlayer = players.get(currentPlayerIndex);
+        while(currentPlayer.isFinished()){
+            players.remove(currentPlayerIndex);
+            finishedPlayers.add(currentPlayer);
+            if(finishedPlayers.size() == numberOfPlayers){
+                board.notificationBoard.addNotification("All finished!");
+                return;
+            }
+            currentPlayer = players.get(currentPlayerIndex % players.size());
         }
         if(playersDots.containsKey(currentPlayer)) {
             DotHandler.clickDot(playersDots.get(currentPlayer));
@@ -102,7 +109,7 @@ public class Game {
     }
     public static void selectDot(Dot dot){
         disableDots();
-        dot.changeBorder(Color.BLACK);
+        dot.changeBorder(Color.WHITE);
         // Player's first selected dot
         if(gameHistory.get(currentPlayer).isEmpty()){
             dot.setTaken(true, currentPlayer);

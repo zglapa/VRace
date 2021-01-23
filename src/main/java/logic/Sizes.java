@@ -47,8 +47,19 @@ public class Sizes {
     public static double getBOARDINDENT(){
         return BOARDINDENT;
     }
-
     public static double getNOTICEFONT() {
         return NOTICEFONT;
+    }
+    public static int getCOLUMNS(){
+        return COLUMNS;
+    }
+    public static int getROWS(){
+        return ROWS;
+    }
+    public static int getHEIGHT(){
+        return HEIGHT;
+    }
+    public static int getWIDTH(){
+        return WIDTH;
     }
 }

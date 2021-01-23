@@ -1,5 +1,6 @@
 package visuals;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Pair;
 import logic.Sizes;
@@ -60,18 +61,21 @@ public class Track {
             if(p.getValue() == TrackElement.LINE){
                 Line l = (Line)p.getKey();
                 l.setStrokeWidth(trackWidth);
+                l.setStroke(Color.WHITE);
             }
         }
         for(Pair<Shape, TrackElement> p : outerElements){
             if(p.getValue() == TrackElement.LINE){
                 Line l = (Line)p.getKey();
                 l.setStrokeWidth(trackWidth);
+                l.setStroke(Color.WHITE);
             }
         }
     }
     private void drawFinishLine(Dot finishDot){
         this.direction = FinishLineDirection.RIGHT;
         this.finish = new Line();
+        this.finish.setStroke(Color.WHITE);
         this.finish.setStartX(finishDot.getCenterX());
         this.finish.setStartY(finishStartY);
         this.finish.setEndX(finishDot.getCenterX());

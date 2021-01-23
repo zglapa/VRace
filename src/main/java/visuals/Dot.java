@@ -19,11 +19,11 @@ public class Dot{
     private final Circle visibleDot;
     private final Circle clickableDot;
     public Dot(int x, int y){
-        visibleDot = new Circle(Sizes.getSMALLDOTSIZE(), Color.BLUE);
+        visibleDot = new Circle(Sizes.getSMALLDOTSIZE(), Color.LIGHTCYAN);
         clickableDot = new Circle(Sizes.getBIGDOTSIZE());
         this.x = x;
         this.y = y;
-        visibleDot.setStroke(Color.BLACK);
+        visibleDot.setStroke(Color.WHITE);
         visibleDot.setStrokeWidth(0.125 * Sizes.getBIGDOTSIZE());
         this.clicked = false;
         this.taken = false;

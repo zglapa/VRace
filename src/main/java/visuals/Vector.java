@@ -2,10 +2,13 @@ package visuals;
 
 import handlers.BoundHandler;
 import handlers.LineHandler;
+import javafx.animation.FillTransition;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.util.Duration;
 import logic.Sizes;
 
 public class Vector {
