@@ -3,8 +3,8 @@ package handlers;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import logic.Player;
-import sample.Game;
-import visuals.Board;
+import controller.Game;
+import boards.Board;
 import visuals.Dot;
 import visuals.Vector;
 

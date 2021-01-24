@@ -1,7 +1,8 @@
-package visuals;
+package boards;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import visuals.Dot;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

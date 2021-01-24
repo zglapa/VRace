@@ -1,4 +1,4 @@
-package visuals;
+package boards;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

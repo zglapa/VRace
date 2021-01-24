@@ -1,4 +1,4 @@
-package visuals;
+package boards;
 
 import handlers.BoundHandler;
 import handlers.DotHandler;
@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.util.Pair;
 import logic.Sizes;
+import visuals.*;
 
 import java.util.ArrayList;
 

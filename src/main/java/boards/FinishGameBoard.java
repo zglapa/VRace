@@ -1,4 +1,4 @@
-package visuals;
+package boards;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

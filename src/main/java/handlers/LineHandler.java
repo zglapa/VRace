@@ -3,7 +3,7 @@ package handlers;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.util.Pair;
-import visuals.Board;
+import boards.Board;
 import visuals.TrackElement;
 import visuals.Vector;
 

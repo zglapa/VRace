@@ -3,9 +3,9 @@ module VRace {
     requires javafx.graphics;
     requires javafx.fxml;
     requires java.desktop;
-    exports sample;
+    exports controller;
     exports visuals;
     exports handlers;
     exports logic;
-    opens sample;
+    opens controller;
 }

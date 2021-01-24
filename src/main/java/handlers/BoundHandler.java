@@ -1,12 +1,9 @@
 package handlers;
 
-import javafx.geometry.Bounds;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Pair;
-import visuals.Board;
+import boards.Board;
 import visuals.TrackElement;
 import visuals.Vector;
 import java.awt.geom.*;

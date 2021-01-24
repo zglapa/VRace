@@ -1,10 +1,8 @@
-package sample;
+package controller;
 
+import boards.Board;
 import handlers.DotHandler;
-import javafx.css.Size;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.util.Pair;
 import logic.*;
 import visuals.*;
@@ -36,14 +34,12 @@ public class Game {
         currentPlayer.increaseNumberOfMoves();
         if(v.ifCheckpoint()){
             currentPlayer.setCheckpoint();
-            System.out.println(currentPlayerIndex + " checkpoint");
         }
         if(v.outOfBounds){
             currentPlayer.setFinished();
             currentPlayer.setOutOfBounds();
         }
         if(v.ifFinished() && currentPlayer.ifCheckpoint()){
-            System.out.println(currentPlayerIndex + " finished");
             currentPlayer.setFinished();
         }
         changePlayer();
@@ -58,7 +54,6 @@ public class Game {
             i++;
         }
         if(i>=numberOfPlayers) {
-            System.out.println("Disabling all");
             board.dotBoard.setDisable(true);
             finishTheGame();
         }

@@ -1,21 +1,16 @@
-package visuals;
+package boards;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import logic.Sizes;
-import sample.Game;
-import sample.Main;
+import controller.Main;
+import visuals.GameButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;

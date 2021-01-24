@@ -1,26 +1,18 @@
-package visuals;
+package boards;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.css.Size;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import logic.Paints;
-import logic.Player;
 import logic.Sizes;
-import sample.Main;
+import controller.Main;
+import visuals.GameButton;
+import visuals.PlayerNameField;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +25,8 @@ public class GameSetupPane extends BorderPane {
     private final Stage stage;
     private Slider trackSizeSlider;
     private Slider numberOfPlayersSilder;
-    private ArrayList<GameButton> buttons;
     private ArrayList<String> names;
-    private ArrayList<PlayerNameField> playerNameFields;
+    private final ArrayList<PlayerNameField> playerNameFields;
     public GameSetupPane(int WIDTH, int HEIGHT, Stage stage){
         super();
         this.setPrefWidth(WIDTH);
@@ -44,7 +35,7 @@ public class GameSetupPane extends BorderPane {
         this.HEIGHT = HEIGHT;
         this.stage = stage;
         this.setPadding(new Insets(150,30,50,30));
-        this.setBackground(new Background(new BackgroundImage(new Image("setup_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
+        this.setBackground(new Background(new BackgroundImage(new Image("setup2_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
         this.playerNameFields = new ArrayList<>();
         this.setBottom(setButtons());
         setGridPane();
@@ -99,7 +90,7 @@ public class GameSetupPane extends BorderPane {
     private HBox setButtons(){
         GameButton playButton = new GameButton(this.WIDTH/4f, this.HEIGHT/18f, "PLAY");
         GameButton returnButton = new GameButton(this.WIDTH/4f, this.HEIGHT/18f, "RETURN");
-        buttons = new ArrayList<>(Arrays.asList(playButton, returnButton));
+        ArrayList<GameButton> buttons = new ArrayList<>(Arrays.asList(playButton, returnButton));
         for(Button button : buttons){
             button.setOnAction(actionEvent -> {
                 if(button.getText().equalsIgnoreCase("PLAY")){
