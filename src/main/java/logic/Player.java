@@ -2,6 +2,8 @@ package logic;
 
 import javafx.scene.paint.Paint;
 
+import java.util.Comparator;
+
 public class Player {
     private final int index;
     private final Paint color;
@@ -51,4 +53,23 @@ public class Player {
     public void setOutOfBounds() {
         this.outOfBounds = true;
     }
+
+    public static class PlayerSort implements Comparator<Player>{
+        public int compare(Player a, Player b){
+            if(!a.isOutOfBounds() && !b.isOutOfBounds()){
+                return Integer.compare(a.getNumberOfMoves(), b.getNumberOfMoves());
+            }
+            else if(!a.isOutOfBounds()){
+                return -1;
+            }
+            else if(!b.isOutOfBounds()){
+                return 1;
+            }
+            else{
+                return Integer.compare(b.getNumberOfMoves(), a.getNumberOfMoves());
+            }
+
+        }
+    }
 }
+

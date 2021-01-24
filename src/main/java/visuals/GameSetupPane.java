@@ -66,11 +66,11 @@ public class GameSetupPane extends BorderPane {
         numberOfPlayersSlider.setMajorTickUnit(1);
         numberOfPlayersSlider.setMinorTickCount(0);
         numberOfPlayersSlider.setSnapToTicks(true);
-        numberOfPlayersSlider.setMaxWidth(Sizes.getWIDTH()/3);
-        numberOfPlayersSlider.setMinWidth(Sizes.getWIDTH()/3);
+        numberOfPlayersSlider.setMaxWidth(Sizes.getWIDTH()/3f);
+        numberOfPlayersSlider.setMinWidth(Sizes.getWIDTH()/3f);
         numberOfPlayersSlider.valueProperty().addListener((observableValue, oldVal, newVal) -> manipulateSlider(numberOfPlayersSlider, oldVal, newVal));
         flowPane = new FlowPane();
-        flowPane.setPrefHeight(2*Sizes.getHEIGHT()/5);
+        flowPane.setPrefHeight(2*Sizes.getHEIGHT()/5f);
         gridPane.add(label1, 0,0);
         gridPane.add(flowPane, 0,2);
         flowPane.setVgap(20);
@@ -85,8 +85,8 @@ public class GameSetupPane extends BorderPane {
         trackSizeSlider.setMajorTickUnit(5);
         trackSizeSlider.setMinorTickCount(0);
         trackSizeSlider.setSnapToTicks(true);
-        trackSizeSlider.setMinWidth(Sizes.getWIDTH()/3);
-        trackSizeSlider.setMaxWidth(Sizes.getWIDTH()/3);
+        trackSizeSlider.setMinWidth(Sizes.getWIDTH()/3f);
+        trackSizeSlider.setMaxWidth(Sizes.getWIDTH()/3f);
         this.trackSizeSlider = trackSizeSlider;
         this.numberOfPlayersSilder = numberOfPlayersSlider;
         manipulateSlider(numberOfPlayersSlider, 1,2);
@@ -101,21 +101,18 @@ public class GameSetupPane extends BorderPane {
         GameButton returnButton = new GameButton(this.WIDTH/4f, this.HEIGHT/18f, "RETURN");
         buttons = new ArrayList<>(Arrays.asList(playButton, returnButton));
         for(Button button : buttons){
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    if(button.getText().equalsIgnoreCase("PLAY")){
-                        Sizes.setROWSCOLUMNS((int)trackSizeSlider.getValue(), (int)trackSizeSlider.getValue());
-                        Sizes.setPLAYERNUMBER((int)numberOfPlayersSilder.getValue());
-                        names = new ArrayList<>();
-                        for(PlayerNameField f : playerNameFields){
-                            names.add(f.getName());
-                        }
-                        Main.game(stage, names);
+            button.setOnAction(actionEvent -> {
+                if(button.getText().equalsIgnoreCase("PLAY")){
+                    Sizes.setROWSCOLUMNS((int)trackSizeSlider.getValue(), (int)trackSizeSlider.getValue());
+                    Sizes.setPLAYERNUMBER((int)numberOfPlayersSilder.getValue());
+                    names = new ArrayList<>();
+                    for(PlayerNameField f : playerNameFields){
+                        names.add(f.getName());
                     }
-                    else if(button.getText().equalsIgnoreCase("RETURN")){
-                        Main.goToMainMenu(stage);
-                    }
+                    Main.game(stage, names);
+                }
+                else if(button.getText().equalsIgnoreCase("RETURN")){
+                    Main.goToMainMenu(stage);
                 }
             });
         }
@@ -123,7 +120,7 @@ public class GameSetupPane extends BorderPane {
         hBox.setPadding(new Insets(20,0,50,0));
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(20);
-        hBox.getChildren().addAll(playButton, returnButton);
+        hBox.getChildren().addAll(returnButton, playButton);
         return hBox;
     }
     private void manipulateSlider(Slider slider, Number oldVal, Number newVal){

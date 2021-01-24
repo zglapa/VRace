@@ -15,11 +15,11 @@ import java.util.*;
 
 public class Game {
     static Board board;
-    static Queue<Dot> enabledDots = new LinkedList<>();
-    static HashMap<Player, ArrayList<Move>> gameHistory = new HashMap<>();
-    public static ArrayList<Player> players = new ArrayList<>();
-    public static ArrayList<Player> finishedPlayers = new ArrayList<>();
-    public static HashMap<Player, Dot> playersDots = new HashMap<>();
+    static Queue<Dot> enabledDots;
+    static HashMap<Player, ArrayList<Move>> gameHistory;
+    public static ArrayList<Player> players;
+    public static ArrayList<Player> finishedPlayers;
+    public static HashMap<Player, Dot> playersDots;
     public static Player currentPlayer;
     static int currentPlayerIndex;
     static int numberOfPlayers;
@@ -119,9 +119,14 @@ public class Game {
             changeDots(gameHistory.get(currentPlayer).get(gameHistory.get(currentPlayer).size()-1), dot);
         }
     }
-    public static void start(int players, ArrayList<String> playerNames){
-        numberOfPlayers = players;
+    public static void start(int playersNum, ArrayList<String> playerNames){
+        numberOfPlayers = playersNum;
         numberOfFinishedPlayers = 0;
+        enabledDots = new LinkedList<>();
+        gameHistory = new HashMap<>();
+        players = new ArrayList<>();
+        finishedPlayers = new ArrayList<>();
+        playersDots = new HashMap<>();
         currentPlayer = setPlayers(numberOfPlayers, playerNames);
         setDots();
     }
@@ -183,7 +188,7 @@ public class Game {
         ArrayList<Pair<String, Integer>> list;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
-                ObjectInputStream in = new ObjectInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(file)
         ){
 
             score = (HighScoreList) in.readObject();
@@ -194,10 +199,7 @@ public class Game {
         list = score.get(Sizes.getCOLUMNS());
         for(Player player : players){
             if(player.isOutOfBounds()) continue;
-            if(list.isEmpty()){
-                list.add(new Pair<>(player.getName(), player.getNumberOfMoves()));
-                continue;
-            }
+
             for(int i = 0; i < list.size();++i){
                 if(list.get(i).getValue() == null || player.getNumberOfMoves() < list.get(i).getValue()){
                     list.add(i, new Pair<>(player.getName(), player.getNumberOfMoves()));
@@ -210,12 +212,14 @@ public class Game {
         }
         try(
                 FileOutputStream file = new FileOutputStream("src/main/resources/highscore.out");
-                ObjectOutputStream out = new ObjectOutputStream(file);
+                ObjectOutputStream out = new ObjectOutputStream(file)
         ){
             out.writeObject(score);
         }catch(IOException e){
             e.printStackTrace();
         }
         board.highScoreBoard.updateHighScore();
+        board.finishGameBoard.setVisible(true);
+        board.finishGameBoard.finishGame(players);
     }
 }

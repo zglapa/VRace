@@ -5,6 +5,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class GameButton extends Button {
+    public GameButton(double width, double height, String text, int size){
+        super();
+        this.setPrefWidth(width);
+        this.setPrefHeight(height);
+        this.setText(text);
+        this.setFont(Font.font("msbm10", size));
+        this.setShape(buttonShape(width,height));
+        this.setOpacity(0.8);
+    }
     public GameButton(double width, double height, String text){
         super();
         this.setPrefWidth(width);

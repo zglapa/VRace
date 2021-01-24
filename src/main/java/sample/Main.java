@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -49,9 +51,12 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void game(Stage primaryStage, ArrayList<String> playerNames){
-        Button exitToMenu = new Button();
+        GameButton exitToMenu = new GameButton(Sizes.getWIDTH()/4f, Sizes.getHEIGHT()/18f, "EXIT TO MENU", 30);
+        exitToMenu.setId("exitToMenu");
+        exitToMenu.setOnAction(actionEvent -> goToMainMenu(primaryStage));
         HighScoreBoard highScoreBoard = new HighScoreBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()), Sizes.getCOLUMNS());
-        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH(), highScoreBoard);
+        FinishGameBoard finishGameBoard = new FinishGameBoard(Sizes.getHEIGHT()/2f, Sizes.getHEIGHT()/2f, Sizes.getHEIGHT()/4f, Sizes.getHEIGHT()/4f);
+        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH(), highScoreBoard, finishGameBoard);
         Game.board = board;
         Game.start(Sizes.getPLAYERNUMBER(), playerNames);
         FlowPane backgroundPane = new FlowPane();
@@ -62,7 +67,11 @@ public class Main extends Application {
         backgroundPane.setHgap(Sizes.getWIDTH()/40f);
         backgroundPane.setPadding(new Insets(10,10,10,10));
         backgroundPane.setBackground(new Background(new BackgroundImage(new Image("game_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(Sizes.getWIDTH(), Sizes.getHEIGHT(), false, false, true, true))));
-        backgroundPane.getChildren().add(highScoreBoard);
+        VBox vBox = new VBox();
+        vBox.setSpacing(30);
+        vBox.setPadding(new Insets(200,0,0,0));
+        vBox.getChildren().addAll(highScoreBoard, exitToMenu);
+        backgroundPane.getChildren().add(vBox);
         Group root = new Group(backgroundPane);
         primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));
         primaryStage.getScene().getStylesheets().add("style.css");

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Board {
     public StackPane backboard= new StackPane();
     public HighScoreBoard highScoreBoard;
+    public FinishGameBoard finishGameBoard;
     public DotBoard dotBoard;
     public Pane vectorboard = new Pane();
     public Vector hoverLine;
@@ -21,10 +22,11 @@ public class Board {
     public ArrayList<Dot> finishDots = new ArrayList<>();
     public int rows;
     public int columns;
-    public Board(int rows, int columns, int size, HighScoreBoard nb ){
+    public Board(int rows, int columns, int size, HighScoreBoard nb , FinishGameBoard fb){
         this.highScoreBoard = nb;
         this.rows = rows;
         this.columns = columns;
+        this.finishGameBoard = fb;
         setdotboard(rows, columns);
         setvectorboard(rows, columns);
         backboard.setPrefHeight(Sizes.getBOARDINDENT() * rows);
@@ -32,6 +34,7 @@ public class Board {
         backboard.getChildren().add(vectorboard);
 //        vectorboard.setVisible(false);
         backboard.getChildren().add(dotBoard);
+        backboard.getChildren().add(finishGameBoard);
         DotHandler.backboard = this;
         BoundHandler.board = this;
         LineHandler.board = this;

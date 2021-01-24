@@ -21,14 +21,7 @@ public class Sizes {
         WIDTH = W;
         ROWS = R;
         COLUMNS = C;
-        RATIO = min(HEIGHT, WIDTH)/900f * 50f/max(ROWS, COLUMNS);
-        SMALLDOTSIZE =(3f/4)*RATIO;
-        BIGDOTSIZE = (3f)*RATIO;
-        STROKEWIDTH = (2f)*RATIO;
-        VECTORWIDTH = (3f)*RATIO;
-        TRACKWIDTH = 2f/3*VECTORWIDTH;
-        BOARDINDENT = 15f*RATIO;
-        NOTICEFONT = 20f*RATIO;
+        setROWSCOLUMNS(R, C);
     }
     public static double getSMALLDOTSIZE(){
         return SMALLDOTSIZE;

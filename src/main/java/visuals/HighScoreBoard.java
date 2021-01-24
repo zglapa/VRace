@@ -48,7 +48,7 @@ public class HighScoreBoard extends StackPane{
         HighScoreList score;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
-                ObjectInputStream in = new ObjectInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(file)
         ){
             score = (HighScoreList) in.readObject();
         }catch(IOException | ClassNotFoundException e){
@@ -71,30 +71,31 @@ public class HighScoreBoard extends StackPane{
         HighScoreList score;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
-                ObjectInputStream in = new ObjectInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(file)
         ){
             score = (HighScoreList) in.readObject();
         }catch(IOException | ClassNotFoundException e){
             e.printStackTrace();
             return;
         }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        ArrayList<Pair<String, Integer>> list = score.get(size);
-        for(int i = 0; i < list.size(); ++i){
-            if(list.get(i).getValue() == null){
-                stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append("\n");
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            ArrayList<Pair<String, Integer>> list = score.get(size);
+            for (int i = 0; i < list.size(); ++i) {
+                if (list.get(i).getValue() == null) {
+                    stringBuilder.append(i + 1).append(". ").append(list.get(i).getKey()).append("\n");
+                } else
+                    stringBuilder.append(i + 1).append(". ").append(list.get(i).getKey()).append(" -> ").append(list.get(i).getValue()).append("\n");
             }
-            else stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append(" -> ").append(list.get(i).getValue()).append("\n");
-        }
-        highScore.setText(stringBuilder.toString());
+            highScore.setText(stringBuilder.toString());
+        }catch (IndexOutOfBoundsException ignored){}
     }
     @SuppressWarnings("unchecked")
     private Label setHighScore(int size){
         HighScoreList score;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
-                ObjectInputStream in = new ObjectInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(file)
                 ){
             score = (HighScoreList) in.readObject();
         }catch(IOException | ClassNotFoundException e){

@@ -9,6 +9,9 @@ public class HighScoreList extends ArrayList<ArrayList<Pair<String, Integer>>> {
         super();
         for(int i = 15; i <= 50; i = i+5){
             this.add(new ArrayList<>());
+            for(int k = 0; k < 10; ++k){
+                this.get(i).add(new Pair<>("-", null));
+            }
         }
     }
 
