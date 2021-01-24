@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Board {
     public StackPane backboard= new StackPane();
-    public NotificationBoard highScoreBoard;
+    public HighScoreBoard highScoreBoard;
     public DotBoard dotBoard;
     public Pane vectorboard = new Pane();
     public Vector hoverLine;
@@ -21,7 +21,7 @@ public class Board {
     public ArrayList<Dot> finishDots = new ArrayList<>();
     public int rows;
     public int columns;
-    public Board(int rows, int columns, int size, NotificationBoard nb ){
+    public Board(int rows, int columns, int size, HighScoreBoard nb ){
         this.highScoreBoard = nb;
         this.rows = rows;
         this.columns = columns;

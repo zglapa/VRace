@@ -24,8 +24,6 @@ public class MenuPane extends BorderPane {
     private FlowPane flowPane;
     private final int HEIGHT;
     private final int WIDTH;
-    private ArrayList<Button> buttons;
-    private int i;
     private final Stage stage;
     public MenuPane(int HEIGHT, int WIDTH, Stage stage){
         super();
@@ -35,7 +33,6 @@ public class MenuPane extends BorderPane {
         this.WIDTH = WIDTH;
         this.stage = stage;
         this.setBackground(new Background(new BackgroundImage(new Image("main_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
-        i = 0;
         setFlowPane();
         addButtons();
     }
@@ -50,16 +47,12 @@ public class MenuPane extends BorderPane {
         this.setCenter(flowPane);
     }
     private void addButtons(){
-        Button playButton = new Button("PLAY");
-        Button optionButton = new Button("HIGHSCORE");
-        Button exitButton = new Button("EXIT");
-        this.buttons = new ArrayList<>(Arrays.asList(playButton, optionButton, exitButton));
+        GameButton playButton = new GameButton(this.WIDTH/2f, this.HEIGHT/9f, "PLAY");
+        GameButton highScoreButton = new GameButton(this.WIDTH/2f, this.HEIGHT/9f, "HIGHSCORE");
+        GameButton exitButton = new GameButton(this.WIDTH/2f, this.HEIGHT/9f, "EXIT");
+
+        ArrayList<GameButton> buttons = new ArrayList<>(Arrays.asList(playButton, highScoreButton, exitButton));
         for(Button button : buttons){
-            button.setPrefWidth(this.WIDTH/2f);
-            button.setPrefHeight(this.HEIGHT/9f);
-            button.setFont(Font.font("msbm10", 40));
-            button.setShape(buttonShape());
-            button.setOpacity(0.8);
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -69,17 +62,12 @@ public class MenuPane extends BorderPane {
                     else if(button.getText().equalsIgnoreCase("EXIT")){
                         Main.exit(stage);
                     }
+                    else if(button.getText().equalsIgnoreCase("HIGHSCORE")){
+                        Main.highscore(stage);
+                    }
                 }
             });
         }
-        this.flowPane.getChildren().addAll(playButton,optionButton, exitButton);
+        this.flowPane.getChildren().addAll(playButton,highScoreButton, exitButton);
     }
-    private Rectangle buttonShape(){
-        Rectangle rectangle = new Rectangle(this.WIDTH/2f, this.HEIGHT/9f);
-        rectangle.setArcHeight(this.HEIGHT/27f);
-        rectangle.setArcWidth(this.HEIGHT/27f);
-
-        return rectangle;
-    }
-
 }

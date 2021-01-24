@@ -15,19 +15,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class NotificationBoard extends StackPane{
+public class HighScoreBoard extends StackPane{
 
     private final double HEIGHT, WIDTH;
     private final Rectangle backgroundRectangle;
     private final Label highScore;
-    public NotificationBoard(double HEIGHT, double WIDTH){
+    public HighScoreBoard(double HEIGHT, double WIDTH, int size){
         super();
         this.HEIGHT = HEIGHT;
         this.WIDTH = WIDTH;
         this.setPrefHeight(HEIGHT);
         this.setPrefWidth(WIDTH);
         this.backgroundRectangle = setBackground();
-        this.highScore = setHighScore();
+        this.highScore = setHighScore(size);
         this.getChildren().addAll(backgroundRectangle, highScore);
         this.setAlignment(Pos.CENTER);
     }
@@ -67,8 +67,30 @@ public class NotificationBoard extends StackPane{
         highScore.setText(stringBuilder.toString());
 
     }
+    public void changeHighScore(int size){
+        HighScoreList score;
+        try(
+                FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
+                ObjectInputStream in = new ObjectInputStream(file);
+        ){
+            score = (HighScoreList) in.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<Pair<String, Integer>> list = score.get(size);
+        for(int i = 0; i < list.size(); ++i){
+            if(list.get(i).getValue() == null){
+                stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append("\n");
+            }
+            else stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append(" -> ").append(list.get(i).getValue()).append("\n");
+        }
+        highScore.setText(stringBuilder.toString());
+    }
     @SuppressWarnings("unchecked")
-    private Label setHighScore(){
+    private Label setHighScore(int size){
         HighScoreList score;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
@@ -85,7 +107,7 @@ public class NotificationBoard extends StackPane{
         highscore.setPrefWidth(7f/8* WIDTH);
         highscore.setMaxWidth(7f/8 * WIDTH);
         StringBuilder stringBuilder = new StringBuilder();
-        ArrayList<Pair<String, Integer>> list = score.get(Sizes.getCOLUMNS());
+        ArrayList<Pair<String, Integer>> list = score.get(size);
         for(int i = 0; i < list.size(); ++i){
             if(list.get(i).getValue() == null){
                 stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append("\n");

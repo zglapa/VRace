@@ -33,7 +33,7 @@ public class GameSetupPane extends BorderPane {
     private final Stage stage;
     private Slider trackSizeSlider;
     private Slider numberOfPlayersSilder;
-    private ArrayList<Button> buttons;
+    private ArrayList<GameButton> buttons;
     private ArrayList<String> names;
     private ArrayList<PlayerNameField> playerNameFields;
     public GameSetupPane(int WIDTH, int HEIGHT, Stage stage){
@@ -46,6 +46,7 @@ public class GameSetupPane extends BorderPane {
         this.setPadding(new Insets(150,30,50,30));
         this.setBackground(new Background(new BackgroundImage(new Image("setup_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(this.WIDTH, this.HEIGHT, false, false, true, true))));
         this.playerNameFields = new ArrayList<>();
+        this.setBottom(setButtons());
         setGridPane();
         addNodes();
     }
@@ -93,18 +94,13 @@ public class GameSetupPane extends BorderPane {
         label2.setId("header");
         gridPane.add(label2,1,0);
         gridPane.add(trackSizeSlider, 1,1);
-        setButtons();
+
     }
-    private void setButtons(){
-        Button playButton = new Button("PLAY");
-        Button returnButton = new Button("RETURN");
+    private HBox setButtons(){
+        GameButton playButton = new GameButton(this.WIDTH/4f, this.HEIGHT/18f, "PLAY");
+        GameButton returnButton = new GameButton(this.WIDTH/4f, this.HEIGHT/18f, "RETURN");
         buttons = new ArrayList<>(Arrays.asList(playButton, returnButton));
         for(Button button : buttons){
-            button.setPrefWidth(Sizes.getWIDTH()/3);
-            button.setPrefHeight(Sizes.getHEIGHT()/20);
-            button.setFont(Font.font("msbm10", 40));
-            button.setShape(buttonShape());
-            button.setOpacity(0.8);
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -123,8 +119,12 @@ public class GameSetupPane extends BorderPane {
                 }
             });
         }
-        this.gridPane.add(playButton,1,3);
-        this.gridPane.add(returnButton, 0, 3);
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(20,0,50,0));
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(20);
+        hBox.getChildren().addAll(playButton, returnButton);
+        return hBox;
     }
     private void manipulateSlider(Slider slider, Number oldVal, Number newVal){
         if(oldVal.equals(newVal)) return;
@@ -150,11 +150,5 @@ public class GameSetupPane extends BorderPane {
                 break;
         }
     }
-    private Rectangle buttonShape(){
-        Rectangle rectangle = new Rectangle(Sizes.getWIDTH()/3, Sizes.getHEIGHT()/20);
-        rectangle.setArcHeight(Sizes.getHEIGHT()/60f);
-        rectangle.setArcWidth(Sizes.getHEIGHT()/60f);
 
-        return rectangle;
-    }
 }

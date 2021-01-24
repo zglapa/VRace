@@ -1,21 +1,16 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logic.Sizes;
-import visuals.Board;
-import visuals.GameSetupPane;
-import visuals.MenuPane;
-import visuals.NotificationBoard;
+import visuals.*;
 
 import java.util.ArrayList;
 
@@ -54,8 +49,9 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void game(Stage primaryStage, ArrayList<String> playerNames){
-        NotificationBoard notificationBoard = new NotificationBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()));
-        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH(), notificationBoard);
+        Button exitToMenu = new Button();
+        HighScoreBoard highScoreBoard = new HighScoreBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()), Sizes.getCOLUMNS());
+        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH(), highScoreBoard);
         Game.board = board;
         Game.start(Sizes.getPLAYERNUMBER(), playerNames);
         FlowPane backgroundPane = new FlowPane();
@@ -66,7 +62,14 @@ public class Main extends Application {
         backgroundPane.setHgap(Sizes.getWIDTH()/40f);
         backgroundPane.setPadding(new Insets(10,10,10,10));
         backgroundPane.setBackground(new Background(new BackgroundImage(new Image("game_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(Sizes.getWIDTH(), Sizes.getHEIGHT(), false, false, true, true))));
-        backgroundPane.getChildren().add(notificationBoard);
+        backgroundPane.getChildren().add(highScoreBoard);
+        Group root = new Group(backgroundPane);
+        primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));
+        primaryStage.getScene().getStylesheets().add("style.css");
+        primaryStage.show();
+    }
+    public static void highscore(Stage primaryStage){
+        HighScorePane backgroundPane= new HighScorePane(Sizes.getWIDTH(), Sizes.getHEIGHT(),primaryStage);
         Group root = new Group(backgroundPane);
         primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));
         primaryStage.getScene().getStylesheets().add("style.css");
