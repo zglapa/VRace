@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import logic.HighScoreList;
 import logic.Sizes;
 
 import java.io.*;
@@ -43,29 +44,53 @@ public class NotificationBoard extends StackPane{
         rectangle.setStrokeWidth(3f);
         return rectangle;
     }
+    public void updateHighScore(){
+        HighScoreList score;
+        try(
+                FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
+                ObjectInputStream in = new ObjectInputStream(file);
+        ){
+            score = (HighScoreList) in.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return;
+        }
+        ArrayList<Pair<String, Integer>> list = score.get(Sizes.getCOLUMNS());
+        StringBuilder stringBuilder = new StringBuilder();
 
+        for(int i = 0; i < list.size(); ++i){
+            if(list.get(i).getValue() == null){
+                stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append("\n");
+            }
+            else stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append(" -> ").append(list.get(i).getValue()).append("\n");
+        }
+        highScore.setText(stringBuilder.toString());
+
+    }
+    @SuppressWarnings("unchecked")
     private Label setHighScore(){
-        ArrayList<Pair<String, Integer>> score;
-
+        HighScoreList score;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
                 ObjectInputStream in = new ObjectInputStream(file);
                 ){
-            score = (ArrayList<Pair<String, Integer>>) in.readObject();
+            score = (HighScoreList) in.readObject();
         }catch(IOException | ClassNotFoundException e){
             e.printStackTrace();
             return  new Label("");
         }
 
         Label highscore = new Label();
+        highscore.setId("highscore");
         highscore.setPrefWidth(7f/8* WIDTH);
         highscore.setMaxWidth(7f/8 * WIDTH);
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i < score.size(); ++i){
-            if(score.get(i).getValue() == null){
-                stringBuilder.append(i+1).append(". ").append(score.get(i).getKey()).append("\n");
+        ArrayList<Pair<String, Integer>> list = score.get(Sizes.getCOLUMNS());
+        for(int i = 0; i < list.size(); ++i){
+            if(list.get(i).getValue() == null){
+                stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append("\n");
             }
-            else stringBuilder.append(i+1).append(". ").append(score.get(i).getKey()).append(" -> ").append(score.get(i).getValue()).append("\n");
+            else stringBuilder.append(i+1).append(". ").append(list.get(i).getKey()).append(" -> ").append(list.get(i).getValue()).append("\n");
         }
         highscore.setText(stringBuilder.toString());
         highscore.setTextFill(Color.BLACK);

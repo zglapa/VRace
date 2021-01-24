@@ -27,9 +27,11 @@ public class PlayerNameField extends StackPane {
         background.setArcWidth(HEIGHT/3);
         background.setArcHeight(HEIGHT/3);
         nameField = new TextField("Player " + index);
+        nameField.setId("nameField");
         colorField = new Rectangle(HEIGHT*7f/8,HEIGHT*7f/8);
         colorField.setFill(paint);
         numberField = new Label("#" + index);
+        numberField.setId("numberField");
         hBox.getChildren().addAll(numberField, colorField, nameField);
         this.getChildren().addAll(background, hBox);
     }

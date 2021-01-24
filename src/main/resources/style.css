@@ -1,7 +1,22 @@
 .root{
     -fx-font-family: "Ubuntu Thin";
 }
-.label{
+#numberField{
+    -fx-font-family: "Ubuntu Thin";
+    -fx-text-fill:  black;
+    -fx-font-size: 30px;
+}
+#nameField{
+    -fx-font-family: "Ubuntu Thin";
+    -fx-text-fill:  black;
+    -fx-font-size: 20px;
+}
+#highscore{
+    -fx-font-family:"Ubuntu Thin";
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+}
+#header{
     -fx-font-family:"Ubuntu Thin";
     -fx-font-size: 30px;
     -fx-text-fill: white;

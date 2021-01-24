@@ -8,6 +8,7 @@ public class Player {
     private int numberOfMoves;
     private boolean checkpoint;
     private boolean finished;
+    private boolean outOfBounds;
     private final String name;
     public Player(int i, Paint p, String name){
         this.index = i;
@@ -41,5 +42,13 @@ public class Player {
     }
     public String getName(){
         return name;
+    }
+
+    public boolean isOutOfBounds() {
+        return outOfBounds;
+    }
+
+    public void setOutOfBounds() {
+        this.outOfBounds = true;
     }
 }

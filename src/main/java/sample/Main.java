@@ -27,6 +27,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("VRace");
+        primaryStage.setResizable(false);
         Sizes.set(HEIGHT,WIDTH,ROWS, COLUMNS);
         goToMainMenu(primaryStage);
     }
@@ -53,7 +54,8 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void game(Stage primaryStage, ArrayList<String> playerNames){
-        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH());
+        NotificationBoard notificationBoard = new NotificationBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()));
+        Board board = new Board(Sizes.getCOLUMNS(),Sizes.getROWS(), Sizes.getHEIGHT()*Sizes.getWIDTH(), notificationBoard);
         Game.board = board;
         Game.start(Sizes.getPLAYERNUMBER(), playerNames);
         FlowPane backgroundPane = new FlowPane();
@@ -64,7 +66,6 @@ public class Main extends Application {
         backgroundPane.setHgap(Sizes.getWIDTH()/40f);
         backgroundPane.setPadding(new Insets(10,10,10,10));
         backgroundPane.setBackground(new Background(new BackgroundImage(new Image("game_bckg.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(Sizes.getWIDTH(), Sizes.getHEIGHT(), false, false, true, true))));
-        NotificationBoard notificationBoard = new NotificationBoard(Sizes.getHEIGHT()*1f/2, 5f/6*(Sizes.getWIDTH() - Sizes.getHEIGHT()));
         backgroundPane.getChildren().add(notificationBoard);
         Group root = new Group(backgroundPane);
         primaryStage.setScene(new Scene(root, Sizes.getWIDTH(), Sizes.getHEIGHT()));

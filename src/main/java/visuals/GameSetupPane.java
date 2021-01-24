@@ -57,6 +57,7 @@ public class GameSetupPane extends BorderPane {
     }
     private void addNodes(){
         Label label1 = new Label("Select number of players");
+        label1.setId("header");
         Slider numberOfPlayersSlider = new Slider(1, 4,2);
         numberOfPlayersSlider.setBlockIncrement(1);
         numberOfPlayersSlider.setShowTickMarks(true);
@@ -89,7 +90,7 @@ public class GameSetupPane extends BorderPane {
         this.numberOfPlayersSilder = numberOfPlayersSlider;
         manipulateSlider(numberOfPlayersSlider, 1,2);
         Label label2 = new Label("Select track size");
-
+        label2.setId("header");
         gridPane.add(label2,1,0);
         gridPane.add(trackSizeSlider, 1,1);
         setButtons();

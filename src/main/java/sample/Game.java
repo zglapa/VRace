@@ -1,16 +1,13 @@
 package sample;
 
 import handlers.DotHandler;
+import javafx.css.Size;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Pair;
-import logic.Move;
-import logic.Paints;
-import logic.Player;
-import visuals.Board;
-import visuals.Dot;
-import visuals.PlayerColor;
+import logic.*;
+import visuals.*;
 import visuals.Vector;
 
 import java.io.*;
@@ -43,6 +40,7 @@ public class Game {
         }
         if(v.outOfBounds){
             currentPlayer.setFinished();
+            currentPlayer.setOutOfBounds();
         }
         if(v.ifFinished() && currentPlayer.ifCheckpoint()){
             System.out.println(currentPlayerIndex + " finished");
@@ -179,27 +177,36 @@ public class Game {
         }
         return firstPlayer;
     }
+    @SuppressWarnings("unchecked")
     private static void finishTheGame(){
-        ArrayList<Pair<String, Integer>> score;
+        HighScoreList score;
+        ArrayList<Pair<String, Integer>> list;
         try(
                 FileInputStream file = new FileInputStream("src/main/resources/highscore.out");
                 ObjectInputStream in = new ObjectInputStream(file);
         ){
-            score = (ArrayList<Pair<String, Integer>>) in.readObject();
+
+            score = (HighScoreList) in.readObject();
         }catch(IOException | ClassNotFoundException e){
             e.printStackTrace();
-            score = new ArrayList<>();
+            score = new HighScoreList();
         }
+        list = score.get(Sizes.getCOLUMNS());
         for(Player player : players){
-            for(int i = 0; i < score.size();++i){
-                if(score.get(i).getValue() == null || player.getNumberOfMoves() < score.get(i).getValue()){
-                    score.add(i, new Pair<>(player.getName(), player.getNumberOfMoves()));
+            if(player.isOutOfBounds()) continue;
+            if(list.isEmpty()){
+                list.add(new Pair<>(player.getName(), player.getNumberOfMoves()));
+                continue;
+            }
+            for(int i = 0; i < list.size();++i){
+                if(list.get(i).getValue() == null || player.getNumberOfMoves() < list.get(i).getValue()){
+                    list.add(i, new Pair<>(player.getName(), player.getNumberOfMoves()));
                     break;
                 }
             }
         }
-        while(score.size() > 10){
-            score.remove(score.size()-1);
+        while(list.size() > 10){
+            list.remove(list.size()-1);
         }
         try(
                 FileOutputStream file = new FileOutputStream("src/main/resources/highscore.out");
@@ -209,6 +216,6 @@ public class Game {
         }catch(IOException e){
             e.printStackTrace();
         }
-
+        board.highScoreBoard.updateHighScore();
     }
 }
